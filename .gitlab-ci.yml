@@ -62,7 +62,7 @@ staging-apply:
     # Terraform deploy the infrastructure viewed in the terraform plan
     - terraform apply -input=false "planfile"
   dependencies:
-    - plan
+    - staging-plan
   when: manual
 
 ## PRODUCTION
@@ -116,5 +116,5 @@ production-apply:
     # Terraform deploy the infrastructure viewed in the terraform plan
     - terraform apply -input=false "planfile"
   dependencies:
-    - plan
+    - production-plan
   when: manual
