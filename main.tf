@@ -36,3 +36,12 @@ module "bucket" {
   google_region     = var.google_location
   bucket_name       = var.storage_bucket_name
 }
+
+# KMS RING
+module "kms_ring" {
+  source = "github.com/Trazable/Terraform-Trazable-Modules/modules/google/kms/kms-ring"
+
+  google_project_id = var.google_project_id
+  kms_ring_name     = var.kms_ring_name
+  google_region     = var.google_location
+}
