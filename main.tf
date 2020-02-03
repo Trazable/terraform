@@ -45,3 +45,12 @@ module "kms_ring" {
   kms_ring_name     = var.kms_ring_name
   google_region     = var.google_location
 }
+
+# KMS KEYS WITH THE KMS_RING PATH
+module "kms_key" {
+  source = "github.com/Trazable/Terraform-Trazable-Modules/modules/google/kms/kms-key"
+
+  kms_key_name      = var.kms_key_name
+  # OUTPUT.TF KMS_RING_PATH 
+  kms_key_ring_name = module.kms_ring.kms_ring_path
+}
