@@ -10,3 +10,10 @@ provider "google" {
   region      = var.google_region
   zone        = var.google_zone
 }
+
+# PROJECT CONFIGURATION APIS
+module "initial_apis" {
+  source = "github.com/Trazable/Terraform-Trazable-Modules/modules/google/apis/initial-config-apis"
+
+  google_project_id = var.google_project_id
+}
