@@ -27,3 +27,12 @@ module "app_engine" {
   google_region      = var.google_region
   google_location    = var.google_location
 }
+
+# BUCKET(S)
+module "bucket" {
+  source = "github.com/Trazable/Terraform-Trazable-Modules/modules/google/buckets/bucket"
+
+  google_project_id = var.google_project_id
+  google_region     = var.google_location
+  bucket_name       = var.storage_bucket_name
+}
