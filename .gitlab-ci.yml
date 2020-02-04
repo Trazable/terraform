@@ -60,7 +60,7 @@ staging-apply:
     - terraform init -backend-config=backend.json
   script:
     # Terraform deploy the infrastructure viewed in the terraform plan
-    - terraform apply -input=false "planfile"
+    - terraform apply -input=false -auto-approve "planfile"
   dependencies:
     - staging-plan
   when: manual
@@ -115,7 +115,7 @@ production-apply:
     - terraform init -backend-config=backend.json
   script:
     # Terraform deploy the infrastructure viewed in the terraform plan
-    - terraform apply -input=false "planfile"
+    - terraform apply -input=false -auto-approve "planfile"
   dependencies:
     - production-plan
   when: manual
