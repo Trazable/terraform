@@ -16,7 +16,7 @@ stages:
 staging-plan:
   stage: plan
   variables:
-    # This environment variable with the prefix of the backend.hcl specify the workspace of the terraform remote state 
+    # This environment variable with the prefix of the backend.json specify the workspace of the terraform remote state 
     TF_WORKSPACE: staging
   only:
     - master
@@ -27,11 +27,11 @@ staging-plan:
     # Terraform remote state credentials
     - echo $TERRAFORM_TOKEN > ./.terraformrc
     # Terraform backend remote state configuration
-    - echo $TERRAFORM_STAGING_BACKEND > ./backend.hcl
+    - echo $TERRAFORM_STAGING_BACKEND > ./backend.json
     # Terraform variable values for staging environment
     - echo $TERRAFORM_STAGING_VARIABLES > terraform.tfvars.json
     # Init terraform with the backend config
-    - terraform init -backend-config=backend.hcl
+    - terraform init -backend-config=backend.json
   script:
     # Terraform plan to "preview" the changes of the remote infrastructure
     - terraform plan -out "planfile"
@@ -42,7 +42,7 @@ staging-plan:
 staging-apply:
   stage: apply
   variables:
-    # This environment variable with the prefix of the backend.hcl specify the workspace of the terraform remote state
+    # This environment variable with the prefix of the backend.json specify the workspace of the terraform remote state
     TF_WORKSPACE: staging
   only:
     - master
@@ -53,11 +53,11 @@ staging-apply:
     # Terraform remote state credentials
     - echo $TERRAFORM_TOKEN > ./.terraformrc
     # Terraform backend remote state configuration
-    - echo $TERRAFORM_STAGING_BACKEND > ./backend.hcl
+    - echo $TERRAFORM_STAGING_BACKEND > ./backend.json
     # Terraform variable values for staging environment
     - echo $TERRAFORM_STAGING_VARIABLES > terraform.tfvars.json
     # Init terraform with the backend config
-    - terraform init -backend-config=backend.hcl
+    - terraform init -backend-config=backend.json
   script:
     # Terraform deploy the infrastructure viewed in the terraform plan
     - terraform apply -input=false "planfile"
@@ -70,7 +70,7 @@ staging-apply:
 production-plan:
   stage: plan
   variables:
-    # This environment variable with the prefix of the backend.hcl specify the workspace of the terraform remote state
+    # This environment variable with the prefix of the backend.json specify the workspace of the terraform remote state
     TF_WORKSPACE: production
   only:
     - master
@@ -81,11 +81,11 @@ production-plan:
     # Terraform remote state credentials
     - echo $TERRAFORM_TOKEN > ./.terraformrc
     # Terraform backend remote state configuration
-    - echo $TERRAFORM_PRODUCTION_BACKEND > ./backend.hcl
+    - echo $TERRAFORM_PRODUCTION_BACKEND > ./backend.json
     # Terraform variable values for production environment
     - echo $TERRAFORM_PRODUCTION_VARIABLES > terraform.tfvars.json
     # Init terraform with the backend config
-    - terraform init -backend-config=backend.hcl
+    - terraform init -backend-config=backend.json
   script:
     # Terraform plan to "preview" the changes of the remote infrastructure
     - terraform plan -out "planfile"
@@ -97,7 +97,7 @@ production-plan:
 production-apply:
   stage: apply
   variables:
-    # This environment variable with the prefix of the backend.hcl specify the workspace of the terraform remote state
+    # This environment variable with the prefix of the backend.json specify the workspace of the terraform remote state
     TF_WORKSPACE: production
   only:
     - master
@@ -108,11 +108,11 @@ production-apply:
     # Terraform remote state credentials
     - echo $TERRAFORM_TOKEN > ./.terraformrc
     # Terraform backend remote state configuration
-    - echo $TERRAFORM_PRODUCTION_BACKEND > ./backend.hcl
+    - echo $TERRAFORM_PRODUCTION_BACKEND > ./backend.json
     # Terraform variable values for production environment
     - echo $TERRAFORM_PRODUCTION_VARIABLES > terraform.tfvars.json
     # Init terraform with the backend config
-    - terraform init -backend-config=backend.hcl
+    - terraform init -backend-config=backend.json
   script:
     # Terraform deploy the infrastructure viewed in the terraform plan
     - terraform apply -input=false "planfile"
