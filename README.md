@@ -35,6 +35,24 @@ you should run terraform with docker with the version specified in the runner of
 * terraform -target [resource_name] [operation], example: terraform -target google_compute_instance.instance_name destroy
 * terraform validate: Terraform syntax validation.
 
+## CI ENVIRONMENT VARIABLES
+
+### Generic
+
+* TERRAFORM_TOKEN : Terraform remote state credentials (.terraformrc)
+
+### Staging
+
+* CD_STAGING_DEPLOY_TOKEN : Google service account staging project (google_service_account.json)
+* TERRAFORM_STAGING_BACKEND : Remote state backend staging project (backend.hcl)
+* TERRAFORM_STAGING_VARIABLES : Value of the staging variables (terraform.tfvars.json)
+
+### Production
+
+* CD_PRODUCTION_DEPLOY_TOKEN : Google service account production project (google_service_account.json)
+* TERRAFORM_PRODUCTION_BACKEND : Remote state backend production project (backend.hcl)
+* TERRAFORM_PRODUCTION_VARIABLES : Value of the production variables (terraform.tfvars.json)
+
 ## Built With
 
 * [Terraform](https://www.terraform.io/docs/index.html) - Terraform Documentation

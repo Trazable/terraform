@@ -1,0 +1,121 @@
+image: 
+  name: hashicorp/terraform:0.12.20
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+variables:
+  TF_CLI_CONFIG_FILE: .terraformrc
+
+stages:
+  - plan
+  - apply
+
+## STAGING
+
+staging-plan:
+  stage: plan
+  variables:
+    # This environment variable with the prefix of the backend.json specify the workspace of the terraform remote state 
+    TF_WORKSPACE: staging
+  only:
+    - master
+  before_script:
+    - rm -rf .terraform
+    # Google Cloud credentials
+    - echo $CD_STAGING_DEPLOY_TOKEN > ./google_service_account.json
+    # Terraform remote state credentials
+    - echo $TERRAFORM_TOKEN > ./.terraformrc
+    # Terraform backend remote state configuration
+    - echo $TERRAFORM_STAGING_BACKEND > ./backend.json
+    # Terraform variable values for staging environment
+    - echo $TERRAFORM_STAGING_VARIABLES > terraform.tfvars.json
+    # Init terraform with the backend config
+    - terraform init -backend-config=backend.json
+  script:
+    # Terraform plan to "preview" the changes of the remote infrastructure
+    - terraform plan -out "planfile"
+  artifacts:
+    paths:
+      - planfile
+
+staging-apply:
+  stage: apply
+  variables:
+    # This environment variable with the prefix of the backend.json specify the workspace of the terraform remote state
+    TF_WORKSPACE: staging
+  only:
+    - master
+  before_script:
+    - rm -rf .terraform
+    # Google Cloud credentials
+    - echo $CD_STAGING_DEPLOY_TOKEN > ./google_service_account.json
+    # Terraform remote state credentials
+    - echo $TERRAFORM_TOKEN > ./.terraformrc
+    # Terraform backend remote state configuration
+    - echo $TERRAFORM_STAGING_BACKEND > ./backend.json
+    # Terraform variable values for staging environment
+    - echo $TERRAFORM_STAGING_VARIABLES > terraform.tfvars.json
+    # Init terraform with the backend config
+    - terraform init -backend-config=backend.json
+  script:
+    # Terraform deploy the infrastructure viewed in the terraform plan
+    - terraform apply -input=false -auto-approve "planfile"
+  dependencies:
+    - staging-plan
+  when: manual
+
+## PRODUCTION
+
+production-plan:
+  stage: plan
+  variables:
+    # This environment variable with the prefix of the backend.json specify the workspace of the terraform remote state
+    TF_WORKSPACE: production
+  only:
+    - master
+  before_script:
+    - rm -rf .terraform
+    # Google Cloud credentials
+    - echo $CD_PRODUCTION_DEPLOY_TOKEN > ./google_service_account.json
+    # Terraform remote state credentials
+    - echo $TERRAFORM_TOKEN > ./.terraformrc
+    # Terraform backend remote state configuration
+    - echo $TERRAFORM_PRODUCTION_BACKEND > ./backend.json
+    # Terraform variable values for production environment
+    - echo $TERRAFORM_PRODUCTION_VARIABLES > terraform.tfvars.json
+    # Init terraform with the backend config
+    - terraform init -backend-config=backend.json
+  script:
+    # Terraform plan to "preview" the changes of the remote infrastructure
+    - terraform plan -out "planfile"
+  artifacts:
+    paths:
+      - planfile
+  when: manual
+
+production-apply:
+  stage: apply
+  variables:
+    # This environment variable with the prefix of the backend.json specify the workspace of the terraform remote state
+    TF_WORKSPACE: production
+  only:
+    - master
+  before_script:
+    - rm -rf .terraform
+    # Google Cloud credentials
+    - echo $CD_PRODUCTION_DEPLOY_TOKEN > ./google_service_account.json
+    # Terraform remote state credentials
+    - echo $TERRAFORM_TOKEN > ./.terraformrc
+    # Terraform backend remote state configuration
+    - echo $TERRAFORM_PRODUCTION_BACKEND > ./backend.json
+    # Terraform variable values for production environment
+    - echo $TERRAFORM_PRODUCTION_VARIABLES > terraform.tfvars.json
+    # Init terraform with the backend config
+    - terraform init -backend-config=backend.json
+  script:
+    # Terraform deploy the infrastructure viewed in the terraform plan
+    - terraform apply -input=false -auto-approve "planfile"
+  dependencies:
+    - production-plan
+  when: manual
