@@ -33,3 +33,6 @@ override.tf.json
 *google_service_account.json
 # Ignore .terraformc to acces to the terraform api.
 .terraformrc
+# Ignore development files (variables and backend config)
+*terraform.tfvars.json
+*backend.json
