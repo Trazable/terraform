@@ -26,6 +26,8 @@ module "app_engine" {
   zip_location       = var.zip_location
   google_region      = var.google_region
   google_location    = var.google_location
+
+  dependencies       = [module.initial_apis.depended_on]
 }
 
 # BUCKET(S)
@@ -44,6 +46,8 @@ module "kms_ring" {
   google_project_id = var.google_project_id
   kms_ring_name     = var.kms_ring_name
   google_region     = var.google_region
+  
+  dependencies      = [module.initial_apis.depended_on]
 }
 
 # KMS KEYS WITH THE KMS_RING PATH
