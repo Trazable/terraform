@@ -1,5 +1,6 @@
 # Terraform
 
+[THIS REPO IS NO LONGER MAINTAINED]
 Terraform tool to use infrastructure as Code.
 
 ## Terraform CI deployments
